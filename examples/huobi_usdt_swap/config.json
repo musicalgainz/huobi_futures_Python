@@ -3,7 +3,7 @@
     "LOG": {
         "console": true,
         "level": "DEBUG",
-        "path": "/data/logs/servers/swap_maker_strategy",
+        "path": "/home/ubuntu/Crypto/Huobifutures/examples/huobi_usdt_swap",
         "name": "swap_maker_strategy.log",
         "clear": true,
         "backup_count": 5

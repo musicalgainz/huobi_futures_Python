@@ -1,6 +1,10 @@
 # -*- coding:utf-8 -*-
 """
+简单卖平策略，仅做演示使用
 
+Author: Qiaoxiaofeng
+Date:   2020/09/10
+Email: andyjoe318@gmail.com
 """
 # 策略实现
 import time
@@ -27,7 +31,7 @@ class MyStrategy:
     def __init__(self):
         """ 初始化
         """
-        self.strategy = config.strategy #just the name
+        self.strategy = config.strategy
         self.platform = config.accounts[0]["platform"]
         self.account = config.accounts[0]["account"]
         self.access_key = config.accounts[0]["access_key"]
@@ -56,7 +60,6 @@ class MyStrategy:
         self.bid1_price = 0
         self.ask1_volume = 0
         self.bid1_volume = 0
-        self.client_orderid = 0
 
 
         # Trade module 交易模块
@@ -103,7 +106,6 @@ class MyStrategy:
         if ts_diff > self.orderbook_invalid_seconds * 1000:
             logger.warn("received orderbook timestamp exceed:", self.strategy, self.symbol, ts_diff, caller=self)
             return
-        logger.info(f"{self.symbol}:{self.bid1_price}, {self.bid1_volume}, {self.ask1_price}, {self.ask1_volume}")
         await self.cancel_orders()
         await self.place_orders()
 
@@ -129,8 +131,7 @@ class MyStrategy:
             action = ORDER_ACTION_BUY
             new_price = str(price)  # 将价格转换为字符串，保持精度
             if quantity:
-                self.client_orderid += 1
-                orders_data.append({"price": new_price, "quantity": quantity, "action": action, "order_type": ORDER_TYPE_LIMIT,"client_order_id":self.client_orderid, "lever_rate": 1})
+                orders_data.append({"price": new_price, "quantity": quantity, "action": action, "order_type": ORDER_TYPE_LIMIT, "lever_rate": 1})
                 self.last_ask_price = self.ask1_price
         if self.trader.assets and self.trader.assets.assets.get(self.raw_symbol):
             # 开空单
@@ -141,8 +142,7 @@ class MyStrategy:
                 action = ORDER_ACTION_SELL
                 new_price = str(price)  # 将价格转换为字符串，保持精度
                 if quantity:
-                    self.client_orderid+=1
-                    orders_data.append({"price": new_price, "quantity": quantity, "action": action, "order_type": ORDER_TYPE_LIMIT, "client_order_id":self.client_orderid, "lever_rate": 1})
+                    orders_data.append({"price": new_price, "quantity": quantity, "action": action, "order_type": ORDER_TYPE_LIMIT, "lever_rate": 1})
                     self.last_bid_price = self.bid1_price
 
         if orders_data:
